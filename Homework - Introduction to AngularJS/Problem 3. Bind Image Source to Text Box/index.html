@@ -1,0 +1,33 @@
+<!DOCTYPE hmtl>
+<html>
+	<head>
+		<title>Bind image source to text box</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/style.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.js"></script>
+	</head>
+	<body ng-app="validImageApp" ng-controller="MainController">
+		<div class="jumbotron">
+			<form name="pictureForm" novalidate>
+				<input class="form-control" type="text" name="imageURL" ng-model="imageURL" placeholder="Type valid image url" required picture>
+				<div class="error"
+					ng-show="pictureForm.imageURL.$dirty">
+					<div class="error alert alert-danger" role="alert" ng-show="pictureForm.imageURL.$error.required">
+						Enter valid picture url.
+					</div>
+					<div class="error alert alert-danger" role="alert" ng-show="pictureForm.imageURL.$error.picture">
+						Picture invalid url.
+					</div>
+					<div role="alert" class="error alert alert-info" ng-show="pictureForm.imageURL.$pending.picture">
+						Validating the picture, please wait.
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="text-center">
+			<img ng-src="{{imageURL}}" class="center" id="theImage" alt="Invalid Image URL" ng-show="imageURL.length > 0"/>
+		</div>
+	</body>
+	<script src="js/app.js"></script>
+	<script src="js/directives.js"></script>
+</html>

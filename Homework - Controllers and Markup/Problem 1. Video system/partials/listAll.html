@@ -1,0 +1,86 @@
+<div ng-include="'partials/navigation.html'"></div>
+<div class="wrapper" ng-init="videos = getVideos()">
+	<div class="col-xs-6 col-md-2">
+		Sort by: <select ng-model="order" class="form-control" ng-init="order='title'">
+			<option value="title" ng-selected="true">Title</option>
+			<option value="length">Length</option>
+			<option value="date">Date</option>
+			<option value="subscribers">Subscribers</option>
+		</select>
+	</div>
+	<div class="col-xs-6 col-md-2">
+		Filter by: <select ng-model="filterType" class="form-control" ng-init="filterType='category'">
+			<option value="category">category</option>
+			<option value="date">date</option>
+			<option value="haveSubtitles">subtitles</option>
+		</select>
+	</div>
+	<div class="col-xs-6 col-md-2">
+		Search text:<input type="text" class="form-control" ng-model="filterInput">
+	</div>
+	<div class="container" ng-repeat="video in videos | videoFilter: filterType : filterInput | orderBy: order">
+		<div class="row">
+			<div class="col-md-8 col-xs-10">
+				<div class="well panel panel-default">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-xs-12 col-sm-4 text-center">
+								<img src="{{video.pictureUrl}}" width="300" height="300" alt="Error loading image." class="center-block img-square img-thumbnail img-responsive">
+							</div>
+							<div class="col-xs-12 col-sm-8">
+								<h2>Title: {{video.title}}</h2>
+								<p>Category: {{video.category}}</p>
+								<p>Length: {{video.length}}</p>
+								<p>
+									Subscribers: {{video.subscribers}}
+									<a class="btn btn-success pull-right" ng-click="subscribe($event)" data-id="{{video.objectId}}">Subscribe!
+									</a>
+								</p>
+								<p>Subtitles:
+									<span ng-if="video.haveSubtitles">Yes</span><span ng-if="!video.haveSubtitles">
+									No
+								</span>
+							</p>
+							<p>Date: {{video.date | date: 'medium'}}</p>
+							<p>
+								<a class="btn">
+									Comments count: {{video.comments.length}}
+								</a>
+								<a ng-click="toggleComments($event)" class="btn btn-info pull-right">Show Comments</a>
+								<div class="comments">
+								<h1>Comments</h1>
+									<div ng-repeat="comment in video.comments">
+										<div class="panel comment">
+											<h4 class="media-heading">Posted by: {{comment.username}}
+											<small>Posted on: {{comment.date | date: 'medium'}}</small>
+											</h4>
+											<h6>Website: <a href="{{comment.websiteUrl}}">{{comment.websiteUrl}}</a></h6>
+											<h6>Likes: {{comment.likes}}</h6>
+											<h4>Content: </h4>
+											<p>
+												{{comment.content}}
+											</p>
+										</div>
+									</div>
+									<div>
+										<input type="text" class="form-control" placeholder="Username" required>
+										<textarea class="form-control" required></textarea>
+										<input type="text" class="form-control" placeholder="Website Url">
+										<a class="btn btn-info" data-id="{{video.objectId}}" ng-click="comment($event)">Add Comment</a>
+									</div>
+								</div>
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<a ng-click="removeVideo($event)" data-id="{{video.objectId}}" class="btn btn-danger form-control">Delete</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-xs-6 col-md-12">
+	<h1 ng-show="videos.length <= 0">There are no videos, <a href="#/addVideo">click here to create one.</a></h1>
+</div>
+</div>

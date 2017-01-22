@@ -1,0 +1,74 @@
+<div ng-include="'partials/navigation.html'"></div>
+<div>
+	<div class="col-md-4">
+		<form name="videoForm" novalidate ng-submit="createVideo()">
+			<h3 class="dark-grey">Create Video</h3>
+			
+			<div class="form-group col-lg-12">
+				<label>Title *</label>
+				<input type="text" class="form-control" id="title" name="title" ng-model="newVideo.title" required>
+				<div class="error"
+					ng-show="videoForm.title.$dirty && videoForm.title.$invalid">
+					<div class="error alert alert-danger" role="alert" ng-show="videoForm.title.$error.required">
+						Title is required.
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group col-lg-8">
+				<label>Picture url *</label>
+				<input type="text" class="form-control"  name="pictureURL" ng-model="newVideo.pictureURL" required picture>
+				<div class="error"
+					ng-show="videoForm.pictureURL.$dirty">
+					<div class="error alert alert-danger" role="alert" ng-show="videoForm.pictureURL.$error.required">
+						Picture is required.
+					</div>
+					<div class="error alert alert-danger" role="alert" ng-show="videoForm.pictureURL.$error.picture">
+						Picture invalid URL.
+					</div>
+					<div role="alert" class="error alert alert-info" ng-show="videoForm.pictureURL.$pending.picture">
+						Validating the picture.
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group col-lg-4">
+				<a class="thumbnail"><img id="thePicture" alt="Picture URL is not valid." src="{{newVideo.pictureURL}}"></a>
+			</div>
+			<div class="form-group col-lg-12">
+				<label ng-show="getCategories().length > 0">Select Category *</label>
+				<select ng-model="newVideo.selectedCategory" ng-change="newVideoCategorySelect()" ng-init="newVideo.selectedCategory='notSelected'" ng-show="getCategories().length > 0">
+					<option value="notSelected" ng-selected="true">Select Category</option>
+					<option ng-repeat="category in getCategories()" value="{{category}}">{{category}}</option>
+				</select>
+				<label ng-show="getCategories().length > 0">Or enter a new one</label>
+				<label ng-show="getCategories().length == 0">There are no categories yet, enter one. *</label>
+				<input placeholder="Enter category..." type="text" ng-change="newVideo.selectedCategory='notSelected'" value="{{newVideo.selectedCategory}}" class="form-control" ng-model="newVideo.newCategory" id="theCategory" name="theCategory" required>
+				<div class="error"
+					ng-show="videoForm.theCategory.$dirty && videoForm.theCategory.$invalid">
+					<div class="error alert alert-danger" role="alert" ng-show="videoForm.theCategory.$error.required">
+						Category is required.
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group col-lg-12">
+				<label>Date</label>
+				<input type="date" class="form-control" ng-init="newVideo.date=today" ng-model="newVideo.date">
+			</div>
+			<div class="form-group col-lg-10">
+				<label>Have Subtitles</label>
+			</div>
+			<div class="form-group col-lg-2">
+				<input type="checkbox" class="form-control" ng-model="newVideo.haveSubtitles">
+			</div>
+			
+			<div class="form-group col-lg-12">
+				<label>Length</label>
+				<input type="number" class="form-control" ng-init="newVideo.length=0" ng-model="newVideo.length">
+			</div>
+			
+			<button type="submit" ng-disabled="!videoForm.$valid" class="btn btn-primary form-control">Add Video</button>
+		</form>
+	</div>
+</div>
